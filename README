@@ -1,12 +1,85 @@
-To compile the program, type 'make' in this directory.  For more
-information on usage, background etc. refer to the copious comments at
-the top of export_locals.c
+-*- Outline -*-
 
-Files in this directory and their purpose in life:
+Created		: Thu Nov 11 17:24:15 IST 2004
+Last Modified	: Sun Oct 23 17:11:01 IST 2011
 
-export_locals.c - the main C source file.
-example.c       - a sample program that uses libbfd to create a new
-                  ELF object file with a symbols table containing a
-		  global symbol.
-data/           - some misc. files I have used to test the
-                  functionality.
+* Introduction
+
+     By definition, symbols marked 'static' are not accessible outside the
+     compilation unit.  This is just as well.  However there are certain
+     applications where we might want linker access to exactly these shy
+     chappies.  This is a hack alright; but trust me, there are 'genuine'
+     applications for such use.
+
+     This program extracts a specified set of static symbols from a given
+     object file's symbol table and outputs them to a new binary object file.
+     The new binary can be linked with other object files thereby providing
+     linkage access to once-static symbols of a program.  Duplicate static
+     symbols should be resolved using some user-provided, or, alternately,
+     some sensible default heuristics.
+
+* Usage
+
+     ./export_locals <input_obj_file> -syms a,b,c [-all] [-out <filename>]
+     
+     Where the symbols a, b, c, d etc. are to be extracted and exported.  The
+     output elf file `foo'.
+     
+     Since we are dealing with symbols having local scope, it is possile for
+     multiple symbols to be present with the same name.  For now we handle
+     this case by selecting the 'first' symbol we encounter.  More
+     sophisticated things may be made available in future.
+
+     If the -out flag is not specified, the extracted symbols will be
+     written to a filename called 'foo'.
+
+* LICENSE
+
+     This program is distributed under the terms of GNU General Public License
+     v2.  Note - this program depends on libbfd, which is itself GPLed (*not*
+     LGPL), and as such one doesn't have much choice in the matter of
+     licensing of derivative works.
+
+     I would like make special mention of the following fact: During the
+     period this program was developed I was employed by HCL Technologies
+     India Ltd., working as a consultant for Cisco Inc.  However this program
+     was written completely in my free time on my home computer and as such no
+     resources (time/computers/etc.) of either of the two mentioned companies
+     were used for development purposes.
+
+* Status
+
+** Oct 23, 2011
+
+     Uploaded to Git. Not been tested or used since I left HCL-CODC. I have no
+     idea if this technique is still in use at Cisco or not.
+
+** Nov 27, 2004
+
+     There is a small problem with the address of the symbols after the output
+     file is linked with an external file.  The output file contains the right
+     address, but after linking with another file, the address of the
+     externally linked symbol differs.  Need to verify if this is really a
+     problem or not.  Certainly looks like a problem... But let's see.
+
+* Potential Issues
+
+     This has been tested with libbfd-2.15.  It is bound to have issues with
+     older versions.  You _could_ run into certain type mismatch issues with
+     older versions of bfd as certain types have been made long long in recent
+     versions.
+
+     This has been tested only on ELF object files.  The whole point of bfd
+     being portability across obejct formats, I would expect this stuff to
+     'just work' for coff/a.out. But do not sue me if doesn't.
+
+* Source Contents
+
+   Files in this directory and their purpose in life:
+   
+   export_locals.c - the main C source file.
+   example.c       - a sample program that uses libbfd to create a new
+                     ELF object file with a symbols table containing a
+   		  global symbol.
+   data/           - some misc. files I have used to test the
+                     functionality.
