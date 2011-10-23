@@ -1,5 +1,6 @@
-Please read the comments at the top of the main sourcefile
-export_locals.c
+To compile the program, type 'make' in this directory.  For more
+information on usage, background etc. refer to the copious comments at
+the top of export_locals.c
 
 Files in this directory and their purpose in life:
 
