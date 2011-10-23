@@ -1,0 +1,11 @@
+Please read the comments at the top of the main sourcefile
+export_locals.c
+
+Files in this directory and their purpose in life:
+
+export_locals.c - the main C source file.
+example.c       - a sample program that uses libbfd to create a new
+                  ELF object file with a symbols table containing a
+		  global symbol.
+data/           - some misc. files I have used to test the
+                  functionality.
